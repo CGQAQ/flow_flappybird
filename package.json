@@ -4,7 +4,8 @@
   "description": "flappybird",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "bw": "webpack -w"
   },
   "author": "Jason <m.jason.liu@outlook.com>",
   "license": "MIT",

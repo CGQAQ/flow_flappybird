@@ -1,6 +1,8 @@
-// @ts-check
+// @ts-nocheck
 
 const path = require('path');
+const webpack = require('webpack');
+const jquery = require('jquery');
 
 const dev = 'development';
 const pro = 'production';
@@ -19,5 +21,11 @@ module.exports = {
                 use: 'babel-loader'
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: jquery,
+            jQuery: jquery,
+        })
+    ]
 }

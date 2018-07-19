@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Flappy bird</title>
+
+    <style>
+        #root {
+            display: flex;
+            justify-content: center;
+        }
+        #game-canvas{
+            border: 1px black solid  ;
+        }
+    </style>
 </head>
 <body>
-    <canvas></canvas>
+    <div id="root">
+            <canvas id="game-canvas"></canvas>
+    </div>
+    <script src="./dist/bundle.js"></script>
 </body>
 </html>
