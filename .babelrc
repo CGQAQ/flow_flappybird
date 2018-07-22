@@ -1,5 +1,5 @@
 {
     "presets": [
-        "@babel/env", "@babel/flow"
+        "@babel/env", "@babel/typescript"
     ]
 }

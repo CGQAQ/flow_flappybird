@@ -9,7 +9,7 @@ const pro = 'production';
 
 module.exports = {
     mode: dev,
-    entry: './src/index.js',
+    entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
@@ -17,10 +17,13 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.[tj]s$/,
                 use: 'babel-loader'
             }
         ]
+    },
+    resolve: {
+        extensions: ['*', '.ts', '.js']
     },
     plugins: [
         new webpack.ProvidePlugin({

@@ -9,16 +9,17 @@
   },
   "author": "Jason <m.jason.liu@outlook.com>",
   "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "typescript": "^2.9.2"
+  },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.54",
     "@babel/core": "^7.0.0-beta.54",
     "@babel/preset-env": "^7.0.0-beta.54",
-    "@babel/preset-flow": "^7.0.0-beta.54",
+    "@babel/preset-typescript": "^7.0.0-beta.54",
     "babel-loader": "^8.0.0-beta.4",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0"
-  },
-  "dependencies": {
-    "jquery": "^3.3.1"
   }
 }
