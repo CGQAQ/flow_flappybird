@@ -1,10 +1,8 @@
-// @flow
-
 import $ from "jquery";
-import {Game, Bird, Sprite, Texture} from './main';
+import { Game, Bird, Sprite, Images } from './main';
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     const game_canvas: $<HTMLCanvasElement> = $('#game-canvas');
     const bird = $('.bird');
     const ceiling = $('.ceiling');
@@ -50,11 +48,51 @@ $(document).ready(function() {
     const pipe_up = $('.pipe-up');
     const pipe_down = $('.pipe-down');
 
-    const texture = new Texture();
-    texture.bird = bird.get(0);
-    texture.ceiling = ceiling.get(0);
+    const imgs: Images = {
+        bird: bird.get(0),
+        ceiling: ceiling.get(0),
+        land: land.get(0),
+        replay: replay.get(0),
+        scoreboard: scoreboard.get(0),
+        sky: sky.get(0),
+        splash: splash.get(0),
+        thumb: thumb.get(0),
+        font_big: [
+            font_big_0.get(0),
+            font_big_1.get(0),
+            font_big_2.get(0),
+            font_big_3.get(0),
+            font_big_4.get(0),
+            font_big_5.get(0),
+            font_big_6.get(0),
+            font_big_7.get(0),
+            font_big_8.get(0),
+            font_big_9.get(0),
+        ],
+        font_small: [
+            font_small_0.get(0),
+            font_small_1.get(0),
+            font_small_2.get(0),
+            font_small_3.get(0),
+            font_small_4.get(0),
+            font_small_5.get(0),
+            font_small_6.get(0),
+            font_small_7.get(0),
+            font_small_8.get(0),
+            font_small_9.get(0),
+        ],
+        medal: [
+            medal_bronze.get(0),
+            medal_gold.get(0),
+            medal_platinum.get(0),
+            medal_silver.get(0),
+        ],
+    }
 
-    const game = new Game(game_canvas.get(0), texture);
+
+
+
+    const game = new Game(game_canvas.get(0), imgs);
 
     // const s = new Spirit(0, 0);
     // s.addFrame(bird);
@@ -63,5 +101,12 @@ $(document).ready(function() {
 
     const ctx = game_canvas.get(0).getContext('2d');
     // ctx.drawImage(bird.get(0), 0, 0)
-    ctx.drawImage(font_big_8.get(0), 0, 0)
+    // ctx.drawImage(bird.get(0), 0, 0)
+    // const s = new Sprite(0, 0, bird.get(0), 4);
+    // const render = () => {
+    //     s.draw(ctx)
+    //     requestAnimationFrame(render)
+    // }
+    // requestAnimationFrame(render);
+    game.render()
 });

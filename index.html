@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,23 +12,20 @@
             display: flex;
             justify-content: center;
         }
-        #game-canvas{
-            border: 1px black solid  ;
+
+        #game-canvas {
+            border: 1px black solid;
         }
 
-        #assets{
+        #assets {
             display: block;
-        }
-
-        .bird{
-            clip-path: inset(0 0 75% 0);
-            height: calc(25%);
         }
     </style>
 </head>
+
 <body>
     <div id="root">
-            <canvas id="game-canvas"></canvas>
+        <canvas id="game-canvas"></canvas>
     </div>
     <div id="assets">
         <img src="./assets/bird.png" class="asset bird">
@@ -58,7 +56,7 @@
         <img src="./assets/font_small_7.png" class="asset font-small-7">
         <img src="./assets/font_small_8.png" class="asset font-small-8">
         <img src="./assets/font_small_9.png" class="asset font-small-9">
-        <img src="./assets/medal_bronze.png""asset medal-bronze">
+        <img src="./assets/medal_bronze.png" "asset medal-bronze">
         <img src="./assets/medal_gold.png" class="asset medal-gold">
         <img src="./assets/medal_platinum.png" class="asset medal-platinum">
         <img src="./assets/medal_silver.png" class="asset medal-silver">
@@ -68,4 +66,5 @@
     </div>
     <script src="./dist/bundle.js"></script>
 </body>
+
 </html>
