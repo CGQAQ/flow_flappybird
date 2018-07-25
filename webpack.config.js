@@ -8,7 +8,7 @@ const dev = "development";
 const pro = "production";
 
 module.exports = {
-    mode: dev,
+    mode: pro,
     entry: "./src/index.ts",
     output: {
         path: path.resolve(__dirname, "dist"),
