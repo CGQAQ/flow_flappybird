@@ -548,7 +548,6 @@ export class Dashboard {
 
     draw(ctx: CanvasRenderingContext2D, score: number, hscore: number) {
                ctx.drawImage(this.img, this.width / 2 - this.img.width / 2, this.height / 2 - this.img.height / 2 + this.height / 3 - this.offset);
-               ctx.drawImage(this.medal[0], this.width / 2 - (this.img.width / 2) + 30, this.height / 2 - this.img.height / 2 + this.height / 2 - this.offset);
                ctx.drawImage(this.sf[score % 10], this.width / 2 + (this.img.width / 2 * 0.5) + this.sf[0].width * 2, this.height / 2 - this.img.height/2 - 10 + this.height / 2 - this.offset);
         ctx.drawImage(this.sf[Math.floor(score / 10) % 10], this.width / 2 + (this.img.width / 2 * 0.5) + this.sf[0].width , this.height / 2 - this.img.height / 2 - 10 + this.height / 2 - this.offset);
         ctx.drawImage(this.sf[Math.floor(score / 100) % 10], this.width / 2 + (this.img.width / 2 * 0.5), this.height / 2 - this.img.height / 2 - 10 + this.height / 2 - this.offset);
@@ -556,7 +555,16 @@ export class Dashboard {
         ctx.drawImage(this.bf[hscore % 10], this.width / 2 + (this.img.width / 2 * 0.3) + this.bf[0].width * 2, this.height / 2 - this.img.height / 5 * 2+ this.height / 2 - this.offset);
         ctx.drawImage(this.bf[Math.floor(hscore / 10) % 10], this.width / 2 + (this.img.width / 2 * 0.3) + this.bf[0].width, this.height / 2 - this.img.height / 5 * 2 + this.height / 2 - this.offset);
         ctx.drawImage(this.bf[Math.floor(hscore / 100) % 10], this.width / 2 + (this.img.width / 2) * 0.3, this.height / 2 - (this.img.height / 5) * 2 + this.height / 2 - this.offset);
-                   if(this.offset < this.height / 3){
+                 
+        if(score <= 10)
+            ctx.drawImage(this.medal[0], this.width / 2 - this.img.width / 2 + 30, this.height / 2 - this.img.height / 2 + this.height / 2 - this.offset);
+        else if (score > 10 && score <= 30)
+            ctx.drawImage(this.medal[1], this.width / 2 - this.img.width / 2 + 30, this.height / 2 - this.img.height / 2 + this.height / 2 - this.offset);
+        else if(score > 30 && score <= 50)
+            ctx.drawImage(this.medal[2], this.width / 2 - this.img.width / 2 + 30, this.height / 2 - this.img.height / 2 + this.height / 2 - this.offset);
+        else if(score > 50)
+            ctx.drawImage(this.medal[3], this.width / 2 - this.img.width / 2 + 30, this.height / 2 - this.img.height / 2 + this.height / 2 - this.offset);
+        if(this.offset < this.height / 3){
         this.offset += 5;
                    }
                }
