@@ -261,10 +261,9 @@ export class Bird extends Sprite implements Moveable {
     }
 
     die(maxy: number) {
-        if (this.pos.y + this.frames.height/4 >= maxy) {
+        if (this.pos.y + this.frames.height / 4 >= maxy) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -361,7 +360,6 @@ export class Ceiling extends Texture {
         this.pos.apply(v);
     }
 
-
     draw(ctx: CanvasRenderingContext2D, width, height) {
         for (
             let base = 0;
@@ -389,7 +387,7 @@ export class Ceiling extends Texture {
 
 // pipe
 abstract class Pipe {
-    readonly name
+    readonly name;
     x: number;
     y: number;
     height: number;
@@ -414,9 +412,19 @@ abstract class Pipe {
     }
 
     hit(bird: Bird): boolean {
-        if (this.name == "up pipe" && bird.pos.x + bird.frames.width > this.x && bird.pos.x < this.x + this.top.width && bird.pos.y + bird.frames.height / 4 > this.y) {
+        if (
+            this.name == "up pipe" &&
+            bird.pos.x + bird.frames.width > this.x &&
+            bird.pos.x < this.x + this.top.width &&
+            bird.pos.y + bird.frames.height / 4 > this.y
+        ) {
             return true;
-        } else if (this.name == "down pipe" && bird.pos.x + bird.frames.width > this.x && bird.pos.x < this.x + this.top.width && bird.pos.y < this.y + this.height) {
+        } else if (
+            this.name == "down pipe" &&
+            bird.pos.x + bird.frames.width > this.x &&
+            bird.pos.x < this.x + this.top.width &&
+            bird.pos.y < this.y + this.height
+        ) {
             return true;
         } else {
             return false;
@@ -424,10 +432,9 @@ abstract class Pipe {
     }
 
     score(bird: Bird): boolean {
-        if (this.x + this.top.width/2 == bird.pos.x + bird.frames.width) {
+        if (this.x + this.top.width / 2 == bird.pos.x + bird.frames.width) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -435,8 +442,7 @@ abstract class Pipe {
     offscreen(width: number): boolean {
         if (this.x < -width) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -519,17 +525,54 @@ class BottomPipe extends Pipe {
     }
 }
 
+export class Dashboard {
+           offset = 0;
+           img: HTMLImageElement;
+           bf: HTMLImageElement[];
+           sf: HTMLImageElement[];
+           medal: HTMLImageElement[];
+           width: number;
+           height: number;
+           constructor(img: HTMLImageElement, bf: HTMLImageElement[], sf: HTMLImageElement[], medal: HTMLImageElement[], w: number, h: number) {
+               this.img = img;
+               this.bf = bf;
+               this.sf = sf;
+               this.medal = medal;
+               this.width = w;
+               this.height = h;
+           }
 
-enum GameState{
+           reset() {
+               this.offset = 0;
+           }
+
+    draw(ctx: CanvasRenderingContext2D, score: number, hscore: number) {
+               ctx.drawImage(this.img, this.width / 2 - this.img.width / 2, this.height / 2 - this.img.height / 2 + this.height / 3 - this.offset);
+               ctx.drawImage(this.medal[0], this.width / 2 - (this.img.width / 2) + 30, this.height / 2 - this.img.height / 2 + this.height / 2 - this.offset);
+               ctx.drawImage(this.sf[score % 10], this.width / 2 + (this.img.width / 2 * 0.5) + this.sf[0].width * 2, this.height / 2 - this.img.height/2 - 10 + this.height / 2 - this.offset);
+        ctx.drawImage(this.sf[Math.floor(score / 10) % 10], this.width / 2 + (this.img.width / 2 * 0.5) + this.sf[0].width , this.height / 2 - this.img.height / 2 - 10 + this.height / 2 - this.offset);
+        ctx.drawImage(this.sf[Math.floor(score / 100) % 10], this.width / 2 + (this.img.width / 2 * 0.5), this.height / 2 - this.img.height / 2 - 10 + this.height / 2 - this.offset);
+
+        ctx.drawImage(this.bf[hscore % 10], this.width / 2 + (this.img.width / 2 * 0.3) + this.bf[0].width * 2, this.height / 2 - this.img.height / 5 * 2+ this.height / 2 - this.offset);
+        ctx.drawImage(this.bf[Math.floor(hscore / 10) % 10], this.width / 2 + (this.img.width / 2 * 0.3) + this.bf[0].width, this.height / 2 - this.img.height / 5 * 2 + this.height / 2 - this.offset);
+        ctx.drawImage(this.bf[Math.floor(hscore / 100) % 10], this.width / 2 + (this.img.width / 2) * 0.3, this.height / 2 - (this.img.height / 5) * 2 + this.height / 2 - this.offset);
+                   if(this.offset < this.height / 3){
+        this.offset += 5;
+                   }
+               }
+           }
+
+enum GameState {
     Start,
     Stop,
     Pause,
+    Dash
 }
 
 export class Game {
-
     state: GameState;
     score: number;
+    dash: Dashboard;
 
     width: number;
     height: number;
@@ -568,6 +611,14 @@ export class Game {
         this.resize(width, height);
         this.images = images;
         this.sounds = sounds;
+        this.dash = new Dashboard(
+            this.images.scoreboard,
+            this.images.font_big,
+            this.images.font_small,
+            this.images.medal,
+            this.width,
+            this.height
+        );
         this.init();
         this.mainloop();
     }
@@ -575,6 +626,7 @@ export class Game {
     init() {
         this.state = GameState.Stop;
         this.score = 0;
+        this.dash.reset();
         this.gravity = new Vector(0, 0.45);
         this.initSpeed = new Vector(0, 0);
         this.bird = new Bird(
@@ -609,7 +661,7 @@ export class Game {
                 }
             });
         }
-        
+
         setTimeout(this.mainloop.bind(this), 1000);
     }
 
@@ -634,13 +686,14 @@ export class Game {
         const lastCy = lastY - lastGap / 2;
         let x = 0;
         if (this.pipes.length <= 0) {
-            x = this.width / 2 * 1.5;
-        }
-        else{
-            x = (Math.floor(Math.random() * 10000) %
-                (MaximumSpace - MinimumSpace)) +
+            x = (this.width / 2) * 1.5;
+        } else {
+            x =
+                (Math.floor(Math.random() * 10000) %
+                    (MaximumSpace - MinimumSpace)) +
                 MinimumSpace +
-                lastX + this.images.pipe[1].width;
+                lastX +
+                this.images.pipe[1].width;
         }
         let cy = 0;
         if (x - lastX > this.images.bird.width * 2.5 || lastX == 0) {
@@ -660,7 +713,6 @@ export class Game {
             const r =
                 (Math.floor(Math.random() * 10000) % lastGap) - lastGap / 2;
             cy = lastCy + r;
-            console.log(r, lastGap / 2, lastCy);
             if (
                 cy - gap <
                 this.images.ceiling.height + this.images.pipe[2].height
@@ -701,6 +753,24 @@ export class Game {
         ];
     }
 
+    dashboard() {
+        let hscore: number;
+        if(document.cookie == ''){
+            document.cookie = this.score+''
+            hscore = this.score;
+        }
+        else{
+            if(this.score > Number(document.cookie)){
+                document.cookie = this.score + ''
+                hscore = this.score;
+            }
+            else{
+                hscore = Number(document.cookie);
+            }
+        }
+        this.dash.draw(this.ctx, this.score, hscore);
+    }
+
     render() {
         this.ctx.clearRect(0, 0, this.width, this.height);
 
@@ -714,30 +784,47 @@ export class Game {
         this.ceiling.draw(this.ctx, this.width, this.height);
 
         // gravity
-        if(this.state == GameState.Start)
-        this.bird.apply(this.gravity);
+        if (this.state == GameState.Start) this.bird.apply(this.gravity);
         this.bird.draw(this.ctx);
-        if (this.bird.die(this.height - this.images.land.height))
-        {
-            this.playsfx(this.sounds.sfx_die);
-            this.playsfx(this.sounds.sfx_hit);
-            this.init();
-        }
-        
-
-        this.pipes.forEach(pipe => {
-            if (this.state == GameState.Start)
-            pipe.move();
-            pipe.draw(this.ctx);
-            if (pipe.hit(this.bird)) {
+        if (this.bird.die(this.height - this.images.land.height)) {
+            if (this.state == GameState.Start) {
+                this.playsfx(this.sounds.sfx_die);
                 this.playsfx(this.sounds.sfx_hit);
-                this.init();
             }
-            if (pipe.name == "up pipe" && pipe.score(this.bird)) {
-                this.playsfx(this.sounds.sfx_point);
-                this.score++;
+
+            this.state = GameState.Dash;
+            this.playsfx(this.sounds.sfx_swooshing);
+        }
+
+    
+        this.pipes.forEach(pipe => {
+            if (this.state == GameState.Start) pipe.move();
+            if (this.state == GameState.Start || this.state == GameState.Pause) {
+                pipe.draw(this.ctx);
+
+                if (pipe.hit(this.bird)) {
+                    this.playsfx(this.sounds.sfx_hit);
+                    this.state = GameState.Dash;
+                    this.playsfx(this.sounds.sfx_swooshing);
+                }
+                if (pipe.name == "up pipe" && pipe.score(this.bird)) {
+                    this.playsfx(this.sounds.sfx_point);
+                    this.score++;
+                }
             }
         });
+
+        if (this.state == GameState.Stop) {
+            this.ctx.drawImage(
+                this.images.splash,
+                this.width / 2 - this.images.splash.width / 2,
+                this.height / 2 - this.images.splash.height / 2
+            );
+        }
+
+        if(this.state == GameState.Dash){
+            this.dashboard();
+        }
 
         // fps info
         this.fcount++;
@@ -758,11 +845,16 @@ export class Game {
     onMouseDown(e) {
         if (e.which == 1) {
             // left button clicked
-            if (this.state != GameState.Start) {
-                this.state = GameState.Start;
+
+            if (this.state == GameState.Dash) {
+                this.init();
+            } else {
+                if (this.state != GameState.Start) {
+                    this.state = GameState.Start;
+                }
+                this.bird.apply(new Vector(0, -12));
+                this.playsfx(this.sounds.sfx_wing);
             }
-            this.bird.apply(new Vector(0, -12));
-            this.playsfx(this.sounds.sfx_wing);
         }
     }
 

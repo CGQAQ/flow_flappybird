@@ -90,9 +90,9 @@ $(document).ready(function() {
         ],
         medal: [
             medal_bronze.get(0),
+            medal_silver.get(0),
             medal_gold.get(0),
-            medal_platinum.get(0),
-            medal_silver.get(0)
+            medal_platinum.get(0)
         ]
     };
 
